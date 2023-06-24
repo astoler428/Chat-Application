@@ -52,20 +52,20 @@ export default function ForgotPassword({
 
   return (
     <div className="border">
-      <form className="login-container">
-        <h1 className="login-title">Reset Password</h1>
+      <form className="form">
+        <h1 className="title">Reset Password</h1>
         <input
           value={passwordChangeInfo.username}
           onChange={handlePasswordInfoChange}
           name="username"
-          className="login-input"
+          className="form-input"
           placeholder="Username"
         />
         <input
           value={passwordChangeInfo.password}
           onChange={handlePasswordInfoChange}
           name="password"
-          className="login-input"
+          className="form-input"
           type="password"
           placeholder="New Password..."
         />
@@ -73,19 +73,16 @@ export default function ForgotPassword({
         <button
           type="submit"
           onClick={handlePasswordChange}
-          className="login-page-btn"
+          className="form-btn"
         >
           Submit
         </button>
+        <p>
+          <a className="link" onClick={() => setForgotPassword(false)}>
+            Back to Login
+          </a>
+        </p>
       </form>
-      <p>
-        <a
-          className="forgot-password-link"
-          onClick={() => setForgotPassword(false)}
-        >
-          Back to Login
-        </a>
-      </p>
     </div>
   );
 }

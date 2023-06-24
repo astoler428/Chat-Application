@@ -42,38 +42,38 @@ export default function Register({
   }
   return (
     <div className="border">
-      <form className="login-container">
-        <h1 className="login-title">Create Account</h1>
+      <form className="form">
+        <h1 className="title">Create Account</h1>
         <input
           value={accountInfo.name}
           onChange={handleAccountInfoChange}
           name="name"
-          className="login-input"
+          className="form-input"
           placeholder="Name"
         />
         <input
           value={accountInfo.username}
           onChange={handleAccountInfoChange}
           name="username"
-          className="login-input"
+          className="form-input"
           placeholder="Username"
         />
         <input
           value={accountInfo.password}
           onChange={handleAccountInfoChange}
           name="password"
-          className="login-input"
+          className="form-input"
           type="password"
           placeholder="Password"
         />
 
-        <button onClick={handleRegister} className="login-page-btn">
+        <button onClick={handleRegister} className="form-btn">
           Register
         </button>
 
         <p>
           Go back?{" "}
-          <a className="login-link" onClick={() => setRegister(false)}>
+          <a className="link" onClick={() => setRegister(false)}>
             Login
           </a>
         </p>

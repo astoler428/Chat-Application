@@ -1,6 +1,8 @@
 import { useState, useRef, useEffect, useContext } from "react";
 // import { SocketContext } from "./App";
 import { SocketContext } from "./App";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleArrowUp } from "@fortawesome/free-solid-svg-icons";
 
 interface FooterProps {
   roomID: string;
@@ -43,9 +45,15 @@ export default function Footer({
         onKeyDown={handleKeyPress}
       />
       {message !== "" && (
-        <button onClick={sendMessage} className="send-message-btn">
-          &#8593;
-        </button>
+        <FontAwesomeIcon
+          icon={faCircleArrowUp}
+          style={{ color: "#0051ff" }}
+          onClick={sendMessage}
+          className="send-message-icon"
+        />
+        // <button onClick={sendMessage} className="send-message-btn">
+        //   &#8593;
+        // </button>
       )}
     </div>
   );

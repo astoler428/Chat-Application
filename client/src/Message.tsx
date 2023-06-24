@@ -9,17 +9,17 @@ export default function Message({
   msgSender,
   sentByMe,
 }: MessageProps) {
-  const containerClassName: string = sentByMe
-    ? "message-sent-container"
-    : "message-received-container";
-  const messageClassName: string = sentByMe
-    ? "message-sent"
-    : "message-received";
+  const containerClasses: string = sentByMe
+    ? "message-container right"
+    : "message-container left";
+  const messageClasses: string = sentByMe
+    ? "message sent right"
+    : "message received left";
 
   return (
-    <div className={containerClassName}>
+    <div className={containerClasses}>
       <p className="msg-sender">{sentByMe ? "You" : msgSender}</p>
-      <span className={messageClassName}>{content}</span>
+      <span className={messageClasses}>{content}</span>
     </div>
   );
 }

@@ -7,6 +7,7 @@ interface ChatProps {
   roomID: string;
   setRoomID: React.Dispatch<React.SetStateAction<string>>;
   username: string;
+  setInRoom: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export interface MessageInfo {
@@ -15,7 +16,12 @@ export interface MessageInfo {
   sentByMe: boolean;
 }
 
-export default function Chat({ roomID, setRoomID, username }: ChatProps) {
+export default function Chat({
+  roomID,
+  setRoomID,
+  username,
+  setInRoom,
+}: ChatProps) {
   const [messages, setMessages] = useState<MessageInfo[]>([]);
 
   function addNewMessage(
@@ -30,7 +36,7 @@ export default function Chat({ roomID, setRoomID, username }: ChatProps) {
 
   return (
     <div className="chat-container">
-      <Header roomID={roomID} setRoomID={setRoomID} />
+      <Header roomID={roomID} setRoomID={setRoomID} setInRoom={setInRoom} />
       <Body
         messages={messages}
         setMessages={setMessages}

@@ -24,6 +24,7 @@ interface ContactsProps {
   roomID: string;
   setRoomID: React.Dispatch<React.SetStateAction<string>>;
   setInContacts: React.Dispatch<React.SetStateAction<boolean>>;
+  setInRoom: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 interface ContactObj {
@@ -36,6 +37,7 @@ export default function Contacts({
   roomID,
   setRoomID,
   setInContacts,
+  setInRoom,
 }: ContactsProps) {
   const [allUsers, setAllUsers] = useState<string[]>([]);
   const [myContacts, setMyContacts] = useState<string[]>([]);
@@ -44,7 +46,6 @@ export default function Contacts({
     null
   );
   const { socket } = useContext(SocketContext)!;
-  const setInRoom = useContext(InRoomContext);
   const [messageHistory, setMessageHistory] = useContext(
     MessageHistoryContext
   )!;
@@ -111,9 +112,9 @@ export default function Contacts({
   });
 
   return (
-    <div className="border contacts-border">
-      <div className="login-container">
-        <h1>Add New Contact</h1>
+    <div className="contacts-border">
+      <div className="form">
+        <h1 className="title black">Add New Contact</h1>
         <Select
           className="contact-select"
           placeholder="Search users..."
@@ -121,10 +122,10 @@ export default function Contacts({
           options={newContactSelectOptions}
           onChange={(selectedOption) => setNewContact(selectedOption!)}
         />
-        <button className="add-contact-btn" onClick={addContact}>
+        <button className="form-btn black-background" onClick={addContact}>
           Add Contact
         </button>
-        <h1 className="contacts-title">Existing Contacts</h1>
+        <h1 className="title black margin-top">Existing Contacts</h1>
         <Select
           className="contact-select"
           placeholder="Search contacts..."
@@ -132,10 +133,10 @@ export default function Contacts({
           options={existingContactSelectOptions}
           onChange={(selectedOption) => setExistingContact(selectedOption!)}
         />
-        <button className="private-message-btn" onClick={openPrivateRoom}>
+        <button className="form-btn black-background" onClick={openPrivateRoom}>
           Private Message
         </button>
-        <a className="logout-link" onClick={() => setInContacts(false)}>
+        <a className="link" onClick={() => setInContacts(false)}>
           Back to Chats
         </a>
       </div>

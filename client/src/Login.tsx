@@ -48,36 +48,33 @@ export default function Login({
 
   return (
     <div className="border">
-      <form className="login-container">
-        <h1 className="login-title">Login</h1>
+      <form className="form">
+        <h1 className="title">Login</h1>
         <input
           value={accountInfo.username}
           onChange={handleAccountInfoChange}
           name="username"
-          className="login-input"
+          className="form-input"
           placeholder="Username"
         />
         <input
           value={accountInfo.password}
           onChange={handleAccountInfoChange}
           name="password"
-          className="login-input"
+          className="form-input"
           type="password"
           placeholder="Password"
         />
 
-        <button onClick={handleLogin} className="login-page-btn">
+        <button onClick={handleLogin} className="form-btn">
           Login
         </button>
-        <a
-          className="forgot-password-link"
-          onClick={() => setForgotPassword(true)}
-        >
+        <a className="link" onClick={() => setForgotPassword(true)}>
           Forgot Password?
         </a>
         <p>
           Don't have an account?{" "}
-          <a className="login-link" onClick={() => setRegister(true)}>
+          <a className="link" onClick={() => setRegister(true)}>
             Register
           </a>
         </p>

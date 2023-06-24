@@ -58,23 +58,4 @@ export default function Body({
       </ScrollToBottom>
     </div>
   );
-  // return (
-  //   <div className="body-container">
-  //     <Message content="Hey Ari," msgSender="Jeff" sentByMe={false} />
-  //     <Message content="Hey Jeng cool?" msgSender="Ari" sentByMe={true} />{" "}
-  //   </div>
-  // );
-}
-
-{
-  /* <Message
-        content="Hey Ari, what are you up to?"
-        msgSender="Jeff"
-        sentByMe={false}
-      />
-      <Message
-        content="Hey Jeff, I'm good. How was your weekend. Did you do anything cool?"
-        msgSender="Ari"
-        sentByMe={true}
-      /> */
 }
