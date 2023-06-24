@@ -2,23 +2,21 @@ import { AccountInfo, SocketContext } from "./App";
 import { io } from "socket.io-client";
 import { useContext } from "react";
 import { fetchLogin } from "./apiCalls";
+import { useNavigate, NavLink } from "react-router-dom";
 
 interface LoginProps {
-  setRegister: React.Dispatch<React.SetStateAction<boolean>>;
   accountInfo: AccountInfo;
   setAccountInfo: React.Dispatch<React.SetStateAction<AccountInfo>>;
   setLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
-  setForgotPassword: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export default function Login({
-  setRegister,
   accountInfo,
   setAccountInfo,
   setLoggedIn,
-  setForgotPassword,
 }: LoginProps) {
   const { setSocket } = useContext(SocketContext)!;
+  const navigate = useNavigate();
 
   function handleAccountInfoChange(
     e: React.ChangeEvent<HTMLInputElement>
@@ -28,18 +26,23 @@ export default function Login({
     });
   }
 
+  //event listener for attempting to login
   async function handleLogin(e: React.MouseEvent<HTMLButtonElement>) {
-    //later check for accuracy
     e.preventDefault();
+    //must enter fields
     if (accountInfo.username === "" || accountInfo.password === "") return;
+
+    //verify user in database
     const response = await fetchLogin(
       accountInfo.username,
       accountInfo.password
     );
 
+    //if valid
     if (response.ok) {
-      setSocket(io("http://localhost:3000"));
+      setSocket(io("http://localhost:3000")); //open socket
       setLoggedIn(true);
+      navigate("/home");
     } else if (response.status == 404)
       window.alert("No user exists with that username");
     else if (response.status == 400) window.alert("Incorrect password");
@@ -65,18 +68,17 @@ export default function Login({
           type="password"
           placeholder="Password"
         />
-
         <button onClick={handleLogin} className="form-btn">
           Login
         </button>
-        <a className="link" onClick={() => setForgotPassword(true)}>
+        <NavLink to="/forgotpassword" className="link">
           Forgot Password?
-        </a>
+        </NavLink>
         <p>
           Don't have an account?{" "}
-          <a className="link" onClick={() => setRegister(true)}>
+          <NavLink to="/register" className="link">
             Register
-          </a>
+          </NavLink>
         </p>
       </form>
     </div>

@@ -16,5 +16,4 @@ const contactSchema = new Schema<IContact>({
   },
 });
 
-//third parameter is collection name
 module.exports = model<IContact>("Contacts", contactSchema);

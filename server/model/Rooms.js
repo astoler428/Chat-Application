@@ -15,5 +15,4 @@ const roomSchema = new mongoose_1.Schema({
         required: true,
     },
 });
-//third parameter is collection name
 module.exports = (0, mongoose_1.model)("Rooms", roomSchema);

@@ -21,5 +21,4 @@ const userSchema = new Schema<IUser>({
   },
 });
 
-//third parameter is collection name
 module.exports = model<IUser>("Users", userSchema);

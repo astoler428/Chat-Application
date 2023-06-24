@@ -1,26 +1,23 @@
-import { AccountInfo, SocketContext } from "./App";
-import { io } from "socket.io-client";
-import { useContext, useState } from "react";
-import { fetchChangePassword, fetchLogin } from "./apiCalls";
+import { useState } from "react";
+import { fetchChangePassword } from "./apiCalls";
+import { useNavigate, NavLink } from "react-router-dom";
 
 interface PasswordChangeInfo {
   username: string;
   password: string;
 }
 
-interface ForgotPasswordProps {
-  setForgotPassword: React.Dispatch<React.SetStateAction<boolean>>;
-}
+export default function ForgotPassword() {
+  const navigate = useNavigate();
 
-export default function ForgotPassword({
-  setForgotPassword,
-}: ForgotPasswordProps) {
+  //state for input values
   const [passwordChangeInfo, setPasswordChangeInfo] =
     useState<PasswordChangeInfo>({
       username: "",
       password: "",
     });
 
+  //event handle to control inputs
   function handlePasswordInfoChange(
     e: React.ChangeEvent<HTMLInputElement>
   ): void {
@@ -29,21 +26,25 @@ export default function ForgotPassword({
     });
   }
 
+  //event listener when new password submitted
   async function handlePasswordChange(e: React.MouseEvent<HTMLButtonElement>) {
     e.preventDefault();
+
+    //must fill out all fields
     if (
       passwordChangeInfo.username === "" ||
       passwordChangeInfo.password === ""
     )
       return;
 
+    //change password on server
     const response = await fetchChangePassword(
       passwordChangeInfo.username,
       passwordChangeInfo.password
     );
-    console.log(response.status);
+
     if (response.status == 200) {
-      setForgotPassword(false);
+      navigate("/");
     } else if (response.status == 204)
       window.alert("A user with that username does not exist");
     else if (response.status == 400) window.alert("Missing Field Required");
@@ -78,9 +79,9 @@ export default function ForgotPassword({
           Submit
         </button>
         <p>
-          <a className="link" onClick={() => setForgotPassword(false)}>
+          <NavLink to="/" className="link">
             Back to Login
-          </a>
+          </NavLink>
         </p>
       </form>
     </div>

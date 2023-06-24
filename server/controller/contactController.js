@@ -10,6 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const Contact = require("../model/Contacts");
+//stores the pair of user, contact in database
 function addContact(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         const { user, contact } = req.body;
@@ -17,6 +18,7 @@ function addContact(req, res) {
             return res.status(400).json({ message: "Missing required field" });
         if (user === contact)
             return res.status(400).json({ message: "Can't add yourself" });
+        //see if already a contact
         const existingContact = yield Contact.findOne({
             user,
             contact,
@@ -27,6 +29,7 @@ function addContact(req, res) {
         return res.status(200).json({ message: "Contact Added" });
     });
 }
+//get list of contacts for a user
 function getContacts(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         const { user } = req.body;
@@ -36,4 +39,13 @@ function getContacts(req, res) {
         return res.status(200).json(contacts);
     });
 }
-module.exports = { addContact, getContacts };
+//when a user deletes account, this removes all their contacts and anyone who had them as a contact
+function deleteContact(username) {
+    return __awaiter(this, void 0, void 0, function* () {
+        if (!username)
+            return;
+        yield Contact.deleteMany({ user: username });
+        yield Contact.deleteMany({ contact: username });
+    });
+}
+module.exports = { addContact, getContacts, deleteContact };

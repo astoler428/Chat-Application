@@ -1,18 +1,20 @@
 import React from "react";
 import { AccountInfo } from "./App";
 import { fetchRegister } from "./apiCalls";
+import { useNavigate, NavLink } from "react-router-dom";
 
 interface RegisterProps {
-  setRegister: React.Dispatch<React.SetStateAction<boolean>>;
   accountInfo: AccountInfo;
   setAccountInfo: React.Dispatch<React.SetStateAction<AccountInfo>>;
 }
 
 export default function Register({
-  setRegister,
   accountInfo,
   setAccountInfo,
 }: RegisterProps) {
+  const navigate = useNavigate();
+
+  //controlled component to handle changes to inputs
   function handleAccountInfoChange(
     e: React.ChangeEvent<HTMLInputElement>
   ): void {
@@ -21,25 +23,31 @@ export default function Register({
     });
   }
 
+  //event listener for attempting to register
   async function handleRegister(e: React.MouseEvent<HTMLButtonElement>) {
     e.preventDefault();
+
+    //must enter all fields
     if (
       accountInfo.name === "" ||
       accountInfo.name === "" ||
       accountInfo.password === ""
     )
       return;
+
+    //register user on server
     const response = await fetchRegister(
       accountInfo.name!,
       accountInfo.username,
       accountInfo.password
     );
 
-    if (response.ok) setRegister(false);
+    if (response.ok) navigate("/"); //navigate back to login
     else if (response.status == 409)
       window.alert("User already exists with this username");
     else window.alert("unknown error");
   }
+
   return (
     <div className="border">
       <form className="form">
@@ -66,16 +74,14 @@ export default function Register({
           type="password"
           placeholder="Password"
         />
-
         <button onClick={handleRegister} className="form-btn">
           Register
         </button>
-
         <p>
           Go back?{" "}
-          <a className="link" onClick={() => setRegister(false)}>
+          <NavLink to="/" className="link">
             Login
-          </a>
+          </NavLink>
         </p>
       </form>
     </div>

@@ -1,15 +1,12 @@
 import { Request, Response } from "express";
 const Message = require("../model/Messages");
 
+//called from the socket.io on event when a new message is sent on frontend
 async function storeMessage(roomID: string, sender: string, message: string) {
-  // const { roomID, sender, message } = req.body;
-  // if (!roomID || !sender || !message)
-  //   return res.status(400).json({ message: "Missing required field" });
-
   Message.create({ roomID, sender, message });
-  // return res.status(200).json({ message: "Message Stored" });
 }
 
+//gets the message history for a particular room
 async function getMessageHistory(req: Request, res: Response) {
   if (!req.params.id)
     return res.status(404).json({ message: "No roomID provided" });

@@ -1,66 +1,59 @@
 import React, { useEffect, useRef, useContext } from "react";
-import { SocketContext, MessageHistoryContext } from "./App";
-import { fetchMessageHistory, fetchDeleteUser } from "./apiCalls";
+import { SocketContext } from "./App";
+import { fetchDeleteUser } from "./apiCalls";
+import { useNavigate, NavLink, useOutletContext } from "react-router-dom";
+import { OutletContext } from "./LoginRequired";
+
 interface Home {
   roomID: string;
   setRoomID: React.Dispatch<React.SetStateAction<string>>;
-  setLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
   username: string;
-  setInContacts: React.Dispatch<React.SetStateAction<boolean>>;
-  setInRoom: React.Dispatch<React.SetStateAction<boolean>>;
+  setLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export default function Home({
   roomID,
   setRoomID,
-  setLoggedIn,
   username,
-  setInContacts,
-  setInRoom,
+  setLoggedIn,
 }: Home) {
-  const [messageHistory, setMessageHistory] = useContext(
-    MessageHistoryContext
-  )!;
-
+  const navigate = useNavigate();
   const roomInputRef = useRef<HTMLInputElement>(null);
-
   let { socket } = useContext(SocketContext)!;
+  const { setPrivateRoom }: OutletContext = useOutletContext();
 
-  socket?.on("connect", () => {
-    socket?.emit("store-username", username);
-  });
-
+  //used to set focus upon rendering
   useEffect(() => {
     roomInputRef.current!.focus();
   }, []);
+
+  //when user connects to socket, send username to store
+  socket?.on("connect", () => {
+    socket?.emit("store-username", username);
+  });
 
   function handleFormChange(e: React.ChangeEvent<HTMLInputElement>): void {
     setRoomID(e.target.value);
   }
 
+  //event handler for joining room
   async function joinRoom(e: React.MouseEvent<HTMLButtonElement>) {
     e.preventDefault();
     if (roomID) {
-      setInRoom(true);
-      socket?.emit("join", roomID);
-
-      //fetch and set history
-      const response = await fetchMessageHistory(roomID);
-      const oldMessages = await response.json();
-      setMessageHistory(oldMessages);
+      socket?.emit("join", roomID); //tell server what roomID is
+      setPrivateRoom(""); //not a private room
+      navigate("/chat");
     }
   }
 
   function handleLogout() {
+    // Don't need to navigate as LoginRequired component redirects when loggedIn false
     setLoggedIn(false);
     socket?.disconnect();
   }
 
   async function handleDeleteAccount() {
-    const response = await fetchDeleteUser(username);
-    const done = await response.json();
-    console.log(done);
-
+    await fetchDeleteUser(username);
     handleLogout();
   }
 
@@ -83,9 +76,9 @@ export default function Home({
             Join Room
           </button>
           <p>
-            <a className="contacts link" onClick={() => setInContacts(true)}>
+            <NavLink to="/contacts" className="contacts link">
               Manage Contacts
-            </a>
+            </NavLink>
           </p>
           <div className="link-container">
             <a className="link" onClick={handleLogout}>
@@ -97,7 +90,6 @@ export default function Home({
           </div>
         </form>
       </div>
-      {/* <Contacts username={username} roomID={roomID} setRoomID={setRoomID} /> */}
     </>
   );
 }

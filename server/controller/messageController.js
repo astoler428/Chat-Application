@@ -10,15 +10,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const Message = require("../model/Messages");
+//called from the socket.io on event when a new message is sent on frontend
 function storeMessage(roomID, sender, message) {
     return __awaiter(this, void 0, void 0, function* () {
-        // const { roomID, sender, message } = req.body;
-        // if (!roomID || !sender || !message)
-        //   return res.status(400).json({ message: "Missing required field" });
         Message.create({ roomID, sender, message });
-        // return res.status(200).json({ message: "Message Stored" });
     });
 }
+//gets the message history for a particular room
 function getMessageHistory(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         if (!req.params.id)

@@ -9,9 +9,11 @@ export default function Message({
   msgSender,
   sentByMe,
 }: MessageProps) {
+  //determine classNames if message is sent by me or being received
   const containerClasses: string = sentByMe
     ? "message-container right"
     : "message-container left";
+
   const messageClasses: string = sentByMe
     ? "message sent right"
     : "message received left";

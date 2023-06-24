@@ -7,17 +7,12 @@ import Register from "./Register";
 import Contacts from "./Contacts";
 import ForgotPassword from "./ForgotPassword";
 import { Socket } from "socket.io-client";
+import { Route, Routes } from "react-router-dom";
+import LoginRequired from "./LoginRequired";
 
 interface ISocketContext {
   socket: Socket | undefined;
   setSocket: React.Dispatch<React.SetStateAction<Socket | undefined>>;
-}
-
-interface Message {
-  roomID: string;
-  sender: string;
-  message: string;
-  date: number;
 }
 
 export interface AccountInfo {
@@ -26,85 +21,78 @@ export interface AccountInfo {
   password: string;
 }
 
-export const MessageHistoryContext = createContext<
-  [Message[], React.Dispatch<React.SetStateAction<Message[]>>] | undefined
->(undefined);
-
 export const SocketContext = createContext<ISocketContext | undefined>(
   undefined
 );
 
-export const InRoomContext = createContext<
-  React.Dispatch<React.SetStateAction<boolean>>
->(() => {});
-
 function App() {
-  const [messageHistory, setMessageHistory] = useState<Message[]>([]);
-  const [socket, setSocket] = useState<Socket | undefined>(undefined);
-  const [roomID, setRoomID] = useState<string>("");
+  const [loggedIn, setLoggedIn] = useState<boolean>(false); //used to protect routes
+  const [socket, setSocket] = useState<Socket | undefined>(undefined); //passed through context
+  const [roomID, setRoomID] = useState<string>(""); //id of socket.io room user joins
   const [accountInfo, setAccountInfo] = useState<AccountInfo>({
     name: "",
     username: "",
     password: "",
-  });
-  //these keep track of what to display
-  const [loggedIn, setLoggedIn] = useState<boolean>(false);
-  const [register, setRegister] = useState<boolean>(false);
-  const [inContacts, setInContacts] = useState<boolean>(false);
-  const [inRoom, setInRoom] = useState<boolean>(false);
-  const [forgotPassword, setForgotPassword] = useState<boolean>(false);
+  }); //login & register info
+
   return (
-    <MessageHistoryContext.Provider value={[messageHistory, setMessageHistory]}>
-      <SocketContext.Provider value={{ socket, setSocket }}>
-        {!loggedIn ? (
-          register ? (
-            <Register
-              accountInfo={accountInfo}
-              setAccountInfo={setAccountInfo}
-              setRegister={setRegister}
-            />
-          ) : forgotPassword ? (
-            <ForgotPassword setForgotPassword={setForgotPassword} />
-          ) : (
+    <SocketContext.Provider value={{ socket, setSocket }}>
+      <Routes>
+        <Route
+          path="/"
+          element={
             <Login
               accountInfo={accountInfo}
               setAccountInfo={setAccountInfo}
-              setRegister={setRegister}
               setLoggedIn={setLoggedIn}
-              setForgotPassword={setForgotPassword}
             />
-          )
-        ) : (
-          <>
-            {inRoom ? (
-              <Chat
+          }
+        />
+        <Route
+          path="/register"
+          element={
+            <Register
+              accountInfo={accountInfo}
+              setAccountInfo={setAccountInfo}
+            />
+          }
+        />
+        <Route path="/forgotpassword" element={<ForgotPassword />} />
+        <Route element={<LoginRequired loggedIn={loggedIn} />}>
+          <Route
+            path="/home"
+            element={
+              <Home
                 roomID={roomID}
                 setRoomID={setRoomID}
                 username={accountInfo.username}
-                setInRoom={setInRoom}
+                setLoggedIn={setLoggedIn}
               />
-            ) : inContacts ? (
+            }
+          />
+          <Route
+            path="/contacts"
+            element={
               <Contacts
                 username={accountInfo.username}
                 roomID={roomID}
                 setRoomID={setRoomID}
-                setInContacts={setInContacts}
-                setInRoom={setInRoom}
               />
-            ) : (
-              <Home
+            }
+          />
+          <Route
+            path="/chat"
+            element={
+              <Chat
                 roomID={roomID}
                 setRoomID={setRoomID}
-                setLoggedIn={setLoggedIn}
                 username={accountInfo.username}
-                setInContacts={setInContacts}
-                setInRoom={setInRoom}
               />
-            )}
-          </>
-        )}
-      </SocketContext.Provider>
-    </MessageHistoryContext.Provider>
+            }
+          />
+        </Route>
+      </Routes>
+    </SocketContext.Provider>
   );
 }
 

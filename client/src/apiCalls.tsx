@@ -1,5 +1,7 @@
 const PORT_URL = "http://localhost:3000";
 
+//all calls to the server exist here
+
 export async function fetchContacts(user: string): Promise<Response> {
   const response = await fetch(`${PORT_URL}/contact/get`, {
     method: "POST",

@@ -11,23 +11,25 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const Room = require("../model/Rooms");
 const { v4: uuidv4 } = require("uuid");
+//creates if necessary and return the roomID for a pair of users
 function getRoomID(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         const { user1, user2 } = req.body;
         if (!user1 || !user2)
             return res.status(400).json({ message: "Missing required field" });
-        let roomDocument;
+        let roomIDdocument;
         let roomID;
-        //check both directions
-        roomDocument = yield Room.findOne({ user1, user2 }).exec();
-        if (!roomDocument)
-            roomDocument = yield Room.findOne({ user1: user2, user2: user1 }).exec();
-        if (!roomDocument) {
+        //check both orderings for an existing roomID document in the database
+        roomIDdocument = yield Room.findOne({ user1, user2 }).exec();
+        if (!roomIDdocument)
+            roomIDdocument = yield Room.findOne({ user1: user2, user2: user1 }).exec();
+        if (!roomIDdocument) {
+            //create random roomID, store it and return it
             roomID = uuidv4();
             Room.create({ user1, user2, roomID });
         }
         else
-            roomID = roomDocument.roomID;
+            roomID = roomIDdocument.roomID;
         res.json(roomID);
     });
 }

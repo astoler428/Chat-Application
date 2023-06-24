@@ -21,5 +21,4 @@ const roomSchema = new Schema<IRoom>({
   },
 });
 
-//third parameter is collection name
 module.exports = model<IRoom>("Rooms", roomSchema);
