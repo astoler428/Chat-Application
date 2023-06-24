@@ -1,25 +1,25 @@
 import { Schema, model } from "mongoose";
 
-interface IUser {
-  name: string;
-  username: string;
-  password: string;
+export interface IRoom {
+  user1: string;
+  user2: string;
+  roomID: string;
 }
 
-const userSchema = new Schema<IUser>({
-  name: {
+const roomSchema = new Schema<IRoom>({
+  user1: {
     type: String,
     required: true,
   },
-  username: {
+  user2: {
     type: String,
     required: true,
   },
-  password: {
+  roomID: {
     type: String,
     required: true,
   },
 });
 
 //third parameter is collection name
-module.exports = model<IUser>("Users", userSchema);
+module.exports = model<IRoom>("Rooms", roomSchema);

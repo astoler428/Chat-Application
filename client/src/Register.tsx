@@ -1,7 +1,6 @@
 import React from "react";
 import { AccountInfo } from "./App";
-
-const PORT_URL = "http://localhost:3000";
+import { fetchRegister } from "./apiCalls";
 
 interface RegisterProps {
   setRegister: React.Dispatch<React.SetStateAction<boolean>>;
@@ -30,17 +29,12 @@ export default function Register({
       accountInfo.password === ""
     )
       return;
-    const response = await fetch(`${PORT_URL}/register`, {
-      method: "POST",
-      headers: {
-        "Content-type": "application/json; charset=UTF-8",
-      },
-      body: JSON.stringify({
-        name: accountInfo.name,
-        username: accountInfo.username,
-        password: accountInfo.password,
-      }),
-    });
+    const response = await fetchRegister(
+      accountInfo.name!,
+      accountInfo.username,
+      accountInfo.password
+    );
+
     if (response.ok) setRegister(false);
     else if (response.status == 409)
       window.alert("User already exists with this username");

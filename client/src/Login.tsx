@@ -1,14 +1,14 @@
 import { AccountInfo, SocketContext } from "./App";
 import { io } from "socket.io-client";
 import { useContext } from "react";
-
-const PORT_URL = "http://localhost:3000";
+import { fetchLogin } from "./apiCalls";
 
 interface LoginProps {
   setRegister: React.Dispatch<React.SetStateAction<boolean>>;
   accountInfo: AccountInfo;
   setAccountInfo: React.Dispatch<React.SetStateAction<AccountInfo>>;
   setLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
+  setForgotPassword: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export default function Login({
@@ -16,6 +16,7 @@ export default function Login({
   accountInfo,
   setAccountInfo,
   setLoggedIn,
+  setForgotPassword,
 }: LoginProps) {
   const { setSocket } = useContext(SocketContext)!;
 
@@ -31,16 +32,10 @@ export default function Login({
     //later check for accuracy
     e.preventDefault();
     if (accountInfo.username === "" || accountInfo.password === "") return;
-    const response = await fetch(`${PORT_URL}/login`, {
-      method: "POST",
-      headers: {
-        "Content-type": "application/json; charset=UTF-8",
-      },
-      body: JSON.stringify({
-        username: accountInfo.username,
-        password: accountInfo.password,
-      }),
-    });
+    const response = await fetchLogin(
+      accountInfo.username,
+      accountInfo.password
+    );
 
     if (response.ok) {
       setSocket(io("http://localhost:3000"));
@@ -74,7 +69,12 @@ export default function Login({
         <button onClick={handleLogin} className="login-page-btn">
           Login
         </button>
-
+        <a
+          className="forgot-password-link"
+          onClick={() => setForgotPassword(true)}
+        >
+          Forgot Password?
+        </a>
         <p>
           Don't have an account?{" "}
           <a className="login-link" onClick={() => setRegister(true)}>

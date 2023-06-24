@@ -2,10 +2,11 @@ import { useState } from "react";
 import Header from "./Header";
 import Body from "./Body";
 import Footer from "./Footer";
-import { FormData } from "./App";
 
 interface ChatProps {
-  data: FormData;
+  roomID: string;
+  setRoomID: React.Dispatch<React.SetStateAction<string>>;
+  username: string;
 }
 
 export interface MessageInfo {
@@ -14,24 +15,33 @@ export interface MessageInfo {
   sentByMe: boolean;
 }
 
-export default function Chat({ data }: ChatProps) {
+export default function Chat({ roomID, setRoomID, username }: ChatProps) {
   const [messages, setMessages] = useState<MessageInfo[]>([]);
 
   function addNewMessage(
     message: string,
-    name: string,
+    username: string,
     sentByMe: boolean
   ): void {
     setMessages((prevMessages) => {
-      return [...prevMessages, { message, sender: name, sentByMe }];
+      return [...prevMessages, { message, sender: username, sentByMe }];
     });
   }
 
   return (
     <div className="chat-container">
-      <Header data={data} />
-      <Body messages={messages} addNewMessage={addNewMessage} />
-      <Footer data={data} addNewMessage={addNewMessage} />
+      <Header roomID={roomID} setRoomID={setRoomID} />
+      <Body
+        messages={messages}
+        setMessages={setMessages}
+        username={username}
+        addNewMessage={addNewMessage}
+      />
+      <Footer
+        roomID={roomID}
+        addNewMessage={addNewMessage}
+        username={username}
+      />
     </div>
   );
 }

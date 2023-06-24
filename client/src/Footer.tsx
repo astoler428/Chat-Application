@@ -1,21 +1,26 @@
 import { useState, useRef, useEffect, useContext } from "react";
 // import { SocketContext } from "./App";
-import { FormData, SocketContext } from "./App";
+import { SocketContext } from "./App";
 
 interface FooterProps {
-  data: FormData;
+  roomID: string;
   addNewMessage: (message: string, name: string, sentByMe: boolean) => void;
+  username: string;
 }
 
-export default function Footer({ data, addNewMessage }: FooterProps) {
+export default function Footer({
+  roomID,
+  addNewMessage,
+  username,
+}: FooterProps) {
   const [message, setMessage] = useState<string>("");
   const messageInputRef = useRef<HTMLInputElement>(null);
 
   let { socket } = useContext(SocketContext)!;
 
   function sendMessage() {
-    socket?.emit("message", message, data.roomID, data.name);
-    addNewMessage(message, data.name, true);
+    socket?.emit("message", message, roomID, username);
+    addNewMessage(message, username, true);
     setMessage("");
   }
 

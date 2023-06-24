@@ -1,12 +1,12 @@
 import { useContext, useEffect, useState } from "react";
 import { InRoomContext, SocketContext } from "./App";
-import { FormData } from "./App";
 
 interface HeaderProps {
-  data: FormData;
+  roomID: string;
+  setRoomID: React.Dispatch<React.SetStateAction<string>>;
 }
 
-export default function Header({ data }: HeaderProps) {
+export default function Header({ roomID, setRoomID }: HeaderProps) {
   const setInRoom = useContext(InRoomContext);
   const [roomMembers, setRoomMembers] = useState<(string | undefined)[]>([]);
 
@@ -20,7 +20,8 @@ export default function Header({ data }: HeaderProps) {
 
   function handleLeaveRoom() {
     setInRoom!(false);
-    socket?.emit("leave", data.roomID);
+    setRoomID("");
+    socket?.emit("leave", roomID);
   }
 
   const roomMembersToDisplay = roomMembers.map((roomMember, index) => {
@@ -32,7 +33,7 @@ export default function Header({ data }: HeaderProps) {
   });
   return (
     <div className="header-container">
-      <div>Room ID: {data.roomID}</div>
+      <div>Room ID: {roomID}</div>
       <div>Members: {roomMembersToDisplay}</div>
       <button onClick={handleLeaveRoom} className="leave-chat-btn">
         &lt;

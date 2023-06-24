@@ -3,20 +3,44 @@ import Message from "./Message";
 // import { socket } from "./App";
 import { MessageInfo } from "./Chat";
 import ScrollToBottom from "react-scroll-to-bottom";
-import { SocketContext } from "./App";
+import { MessageHistoryContext, SocketContext } from "./App";
 
 interface BodyProps {
   messages: MessageInfo[];
+  setMessages: React.Dispatch<React.SetStateAction<MessageInfo[]>>;
+  username: string;
   addNewMessage: (message: string, name: string, sentByMe: boolean) => void;
 }
 
-export default function Body({ messages, addNewMessage }: BodyProps) {
+export default function Body({
+  messages,
+  setMessages,
+  username,
+  addNewMessage,
+}: BodyProps) {
   const { socket } = useContext(SocketContext)!;
+  const [messageHistory, setMessageHistory] = useContext(
+    MessageHistoryContext
+  )!;
+
   useEffect(() => {
     socket?.on("message", (message, name) =>
       addNewMessage(message, name, false)
     );
   }, [socket]);
+
+  useEffect(() => {
+    let oldMessages = [...messageHistory];
+    oldMessages.sort((a, b) => a.date - b.date);
+    const theOldMessages = oldMessages.map((messageObj) => {
+      return {
+        message: messageObj.message,
+        sender: messageObj.sender,
+        sentByMe: messageObj.sender === username,
+      };
+    });
+    setMessages(theOldMessages);
+  }, [messageHistory]);
 
   const messagesToDislay = messages.map((messageObj) => (
     <Message

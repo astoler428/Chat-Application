@@ -172,11 +172,13 @@ body {
 }
 
 .join-btn-container {
-  margin-top: 20px;
+  margin-top: 10px;
   text-align: center;
 }
 
-.join-room-btn {
+.join-room-btn,
+.add-contact-btn,
+.private-message-btn {
   width: 300px;
   height: 40px;
   margin-top: 10px;
@@ -185,15 +187,26 @@ body {
   background-color: black;
   font-weight: bold;
   color: white;
-}
-
-.join-room-btn:hover {
   cursor: pointer;
 }
 
-.join-room-btn:active {
+.add-contact-btn,
+.private-message-btn {
+  margin: 20px 0;
+}
+
+.join-room-btn:active,
+.add-contact-btn:active,
+.private-message-btn:active {
   /* background-color: rgb(44, 44, 44); */
   opacity: 0.6;
+}
+
+.contact-select {
+  /* margin: 50px; */
+  width: 300px;
+  display: block;
+  margin: auto;
 }
 
 /* Login */
@@ -242,23 +255,44 @@ body {
   background-color: darkgreen;
 }
 
+.link-container {
+  margin-top: 80px;
+  display: flex;
+  justify-content: space-evenly;
+}
+
 .login-link,
-.logout-link {
+.logout-link,
+.contacts-link,
+.delete-link,
+.forgot-password-link {
   font-weight: bold;
   text-decoration: none;
   color: black;
   cursor: pointer;
 }
 
-.logout-link {
+.logout-link,
+.contacts-link,
+.logout-link,
+.delete-link,
+.forgot-password-link {
   display: block;
   text-align: center;
   margin-top: 10px;
   color: rgb(9, 8, 8);
 }
 
-.logout-link:hover {
+.logout-link:hover,
+.contacts-link:hover,
+.logout-link:hover,
+.forgot-password-link:hover {
   opacity: 0.6;
+}
+
+.contacts-link {
+  font-size: 20px;
+  color: blue;
 }
 
 .border {
@@ -268,4 +302,14 @@ body {
   background-color: darkgray;
   margin-left: 50%;
   transform: translateX(-50%);
+}
+
+/* contacts */
+
+.contacts-border {
+  height: 500px;
+}
+
+.contacts-title {
+  margin-top: 60px;
 }
