@@ -34,7 +34,7 @@ connectDB();
 export const io = new Server(server, {
   cors: {
     // origin: "http://localhost:5173",
-    origin: "http://ari-chatapp.netlify.app",
+    origin: "https://ari-chatapp.netlify.app",
     methods: ["GET", "POST", "PUT"],
   },
 });
