@@ -9,6 +9,7 @@ import ForgotPassword from "./ForgotPassword";
 import { Socket } from "socket.io-client";
 import { Route, Routes } from "react-router-dom";
 import LoginRequired from "./LoginRequired";
+import { fetchWakeUpWebService } from "./apiCalls";
 
 interface ISocketContext {
   socket: Socket | undefined;
@@ -34,6 +35,10 @@ function App() {
     username: "",
     password: "",
   }); //login & register info
+
+  setInterval(async function () {
+    await fetchWakeUpWebService();
+  }, 800000);
 
   return (
     <SocketContext.Provider value={{ socket, setSocket }}>

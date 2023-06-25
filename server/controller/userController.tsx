@@ -94,10 +94,18 @@ async function updatePassword(req: Request, res: Response) {
   res.status(200).json(existingUser);
 }
 
+//controller for when frontend makes a request to backend on timer to keep awake
+async function wakeup(req: Request, res: Response) {
+  //make a random call to database to keep awake
+  await User.findOne({ username: "Wake Up" });
+  res.status(200).json({ msg: "We are awake" });
+}
+
 module.exports = {
   createNewUser,
   login,
   getAllUsers,
   deleteUser,
   updatePassword,
+  wakeup,
 };

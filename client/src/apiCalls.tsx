@@ -133,3 +133,13 @@ export async function fetchChangePassword(
 
   return response;
 }
+
+//used to keep the web service on render.com from spinning down after 15 minutes of inactivity
+export async function fetchWakeUpWebService() {
+  await fetch(`${PORT_URL}/wakeup`, {
+    method: "GET",
+    headers: {
+      "Content-type": "application/json; charset=UTF-8",
+    },
+  });
+}

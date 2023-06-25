@@ -16,6 +16,7 @@ const {
   getAllUsers,
   deleteUser,
   updatePassword,
+  wakeup,
 } = require("./controller/userController");
 const { addContact, getContacts } = require("./controller/contactController");
 const { getRoomID } = require("./controller/roomController");
@@ -44,7 +45,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json()); //allows put request body to be accessed
 app.use(express.json());
 
-//custom middleware
+//custom request handling
 
 app.post("/register", createNewUser);
 app.post("/login", login);
@@ -55,6 +56,7 @@ app.post("/roomID", getRoomID);
 app.get("/messages/:id", getMessageHistory);
 app.post("/delete", deleteUser);
 app.put("/changepassword", updatePassword);
+app.get("/wakeup", wakeup); //used to keep web service and database awake
 
 io.on("connection", (socket) => {
   //called when a new user connects. Put socket.id and username into map
