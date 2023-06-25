@@ -1,4 +1,5 @@
-const PORT_URL = "http://localhost:3000";
+const PORT_URL = "https://ari-chat-app-mongodb.onrender.com";
+//http://localhost:3000
 
 //all calls to the server exist here
 
