@@ -38,9 +38,11 @@ export default function Login({
       accountInfo.password
     );
 
+    // "http://localhost:3000"
+
     //if valid
     if (response.ok) {
-      setSocket(io("http://localhost:3000")); //open socket
+      setSocket(io("https://ari-chat-app-mongodb.onrender.com")); //open socket
       setLoggedIn(true);
       navigate("/home");
     } else if (response.status == 404)
