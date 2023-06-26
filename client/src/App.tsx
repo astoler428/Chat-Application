@@ -9,7 +9,7 @@ import ForgotPassword from "./ForgotPassword";
 import { Socket } from "socket.io-client";
 import { Route, Routes } from "react-router-dom";
 import LoginRequired from "./LoginRequired";
-import { fetchWakeUpWebService } from "./apiCalls";
+import Loading from "./Loading";
 
 interface ISocketContext {
   socket: Socket | undefined;
@@ -27,6 +27,7 @@ export const SocketContext = createContext<ISocketContext | undefined>(
 );
 
 function App() {
+  const [loading, setLoading] = useState<boolean>(false); //used to display loading during API call
   const [loggedIn, setLoggedIn] = useState<boolean>(false); //used to protect routes
   const [socket, setSocket] = useState<Socket | undefined>(undefined); //passed through context
   const [roomID, setRoomID] = useState<string>(""); //id of socket.io room user joins
@@ -36,33 +37,44 @@ function App() {
     password: "",
   }); //login & register info
 
-  setInterval(async function () {
-    await fetchWakeUpWebService();
-  }, 800000);
-
   return (
     <SocketContext.Provider value={{ socket, setSocket }}>
       <Routes>
         <Route
           path="/"
           element={
-            <Login
-              accountInfo={accountInfo}
-              setAccountInfo={setAccountInfo}
-              setLoggedIn={setLoggedIn}
-            />
+            loading ? (
+              <Loading />
+            ) : (
+              <Login
+                accountInfo={accountInfo}
+                setAccountInfo={setAccountInfo}
+                setLoggedIn={setLoggedIn}
+                setLoading={setLoading}
+              />
+            )
           }
         />
         <Route
           path="/register"
           element={
-            <Register
-              accountInfo={accountInfo}
-              setAccountInfo={setAccountInfo}
-            />
+            loading ? (
+              <Loading />
+            ) : (
+              <Register
+                accountInfo={accountInfo}
+                setAccountInfo={setAccountInfo}
+                setLoading={setLoading}
+              />
+            )
           }
         />
-        <Route path="/forgotpassword" element={<ForgotPassword />} />
+        <Route
+          path="/forgotpassword"
+          element={
+            loading ? <Loading /> : <ForgotPassword setLoading={setLoading} />
+          }
+        />
         <Route element={<LoginRequired loggedIn={loggedIn} />}>
           <Route
             path="/home"

@@ -6,11 +6,13 @@ import { useNavigate, NavLink } from "react-router-dom";
 interface RegisterProps {
   accountInfo: AccountInfo;
   setAccountInfo: React.Dispatch<React.SetStateAction<AccountInfo>>;
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export default function Register({
   accountInfo,
   setAccountInfo,
+  setLoading,
 }: RegisterProps) {
   const navigate = useNavigate();
 
@@ -35,12 +37,15 @@ export default function Register({
     )
       return;
 
+    setLoading(true);
+
     //register user on server
     const response = await fetchRegister(
       accountInfo.name!,
       accountInfo.username,
       accountInfo.password
     );
+    setLoading(false);
 
     if (response.ok) navigate("/"); //navigate back to login
     else if (response.status == 409)

@@ -7,7 +7,11 @@ interface PasswordChangeInfo {
   password: string;
 }
 
-export default function ForgotPassword() {
+interface ForgotPasswordProps {
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export default function ForgotPassword({ setLoading }: ForgotPasswordProps) {
   const navigate = useNavigate();
 
   //state for input values
@@ -37,11 +41,14 @@ export default function ForgotPassword() {
     )
       return;
 
+    setLoading(true);
     //change password on server
     const response = await fetchChangePassword(
       passwordChangeInfo.username,
       passwordChangeInfo.password
     );
+
+    setLoading(false);
 
     if (response.status == 200) {
       navigate("/");

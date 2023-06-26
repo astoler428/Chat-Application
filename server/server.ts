@@ -56,7 +56,6 @@ app.post("/roomID", getRoomID);
 app.get("/messages/:id", getMessageHistory);
 app.post("/delete", deleteUser);
 app.put("/changepassword", updatePassword);
-app.get("/wakeup", wakeup); //used to keep web service and database awake
 
 io.on("connection", (socket) => {
   //called when a new user connects. Put socket.id and username into map

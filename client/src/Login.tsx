@@ -3,17 +3,20 @@ import { io } from "socket.io-client";
 import { useContext } from "react";
 import { fetchLogin } from "./apiCalls";
 import { useNavigate, NavLink } from "react-router-dom";
+import { PORT_URL } from "./apiCalls";
 
 interface LoginProps {
   accountInfo: AccountInfo;
   setAccountInfo: React.Dispatch<React.SetStateAction<AccountInfo>>;
   setLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export default function Login({
   accountInfo,
   setAccountInfo,
   setLoggedIn,
+  setLoading,
 }: LoginProps) {
   const { setSocket } = useContext(SocketContext)!;
   const navigate = useNavigate();
@@ -32,17 +35,17 @@ export default function Login({
     //must enter fields
     if (accountInfo.username === "" || accountInfo.password === "") return;
 
+    setLoading(true);
     //verify user in database
     const response = await fetchLogin(
       accountInfo.username,
       accountInfo.password
     );
-
-    // "http://localhost:3000"
-
+    setLoading(false);
     //if valid
     if (response.ok) {
-      setSocket(io("https://ari-chat-app-mongodb.onrender.com")); //open socket
+      setSocket(io(PORT_URL)); //open socket
+
       setLoggedIn(true);
       navigate("/home");
     } else if (response.status == 404)

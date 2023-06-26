@@ -1,11 +1,20 @@
+Note: Backend takes a minute to start up on first use due to free service spinning down. Be patient.
 
--deploy it!!! and see if refresh causes Logout - watch more of protected routes
+Frontend
+-Written with Typescript and React using React Router
+Deployed at: https://ari-chatapp.netlify.app
 
-change for homepage to be /, but show login if not logged in?
+Baackend
+-Written with Node.js/Express and MongoDB/Mongoose and Socket.IO.
+Deployed on render.com
 
-change backend cors URL and frontend IO url
-
-features:
-password encryption
-route protection
+Features include: 
+-account registration
+-password encryption
+-login authentication 
+-password reset
+-route protection
+-ability to add personal contacts for private messaging and enter a public chat room
+-real time messaging as well as displaying message history
+-real-time updates of messages, new users registering, users joining or leaving chats
 

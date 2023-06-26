@@ -290,3 +290,13 @@ body {
 .margin-top {
   margin-top: 60px;
 }
+
+.loading {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  width: 400px;
+  height: 400px;
+  background-color: darkgray;
+  margin: auto;
+}

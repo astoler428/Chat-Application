@@ -11,7 +11,7 @@ const cors = require("cors");
 const server = http.createServer(app);
 const connectDB = require("./config/dbConn");
 const bodyParser = require("body-parser");
-const { login, createNewUser, getAllUsers, deleteUser, updatePassword, } = require("./controller/userController");
+const { login, createNewUser, getAllUsers, deleteUser, updatePassword, wakeup, } = require("./controller/userController");
 const { addContact, getContacts } = require("./controller/contactController");
 const { getRoomID } = require("./controller/roomController");
 const { storeMessage, getMessageHistory, } = require("./controller/messageController");
@@ -31,7 +31,7 @@ app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json()); //allows put request body to be accessed
 app.use(express.json());
-//custom middleware
+//custom request handling
 app.post("/register", createNewUser);
 app.post("/login", login);
 app.get("/users", getAllUsers);
