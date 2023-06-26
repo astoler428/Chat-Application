@@ -46,7 +46,7 @@ export default function Footer({
         onChange={(e) => setMessage(e.target.value)}
         value={message}
         className="message-input"
-        placeholder="iMessage"
+        placeholder="message"
         onKeyDown={handleKeyPress}
       />
       {message !== "" && (
